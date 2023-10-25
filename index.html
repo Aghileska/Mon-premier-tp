@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Acteurs</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Liste des Acteurs</h1>
+      <div id="actors"></div>
+    </div>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script>
+      let data = [];
+
+      async function getData() {
+        data = await d3.csv(
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXUGDV0HoO1lAPoxalnXZfBJ8Jy0A2sPWJfotwqD_JlSY8nK9Ta-fpMUOCB3sEAGuR8zpP1CoEXpFK/pub?output=csv"
+        );
+        // console.log(data[0]);
+        d3.select("#actors")
+          .selectAll(".actor-card")
+          .data(data)
+          .enter()
+          .append("div")
+          .attr("class", "card actor-card")
+          .style("width", "18rem")
+          .style("margin", "auto")
+          .html(function (d) {
+            if (d["photo"]) {
+              return `
+                  <img class="card-img-top" src="${d["photo"]}">
+                  <div class="card-body">
+                      <h5 class="card-title">${d["Nom et prénom"]}</h5>
+                      <p class="card-text">Âge: ${d["Age"]}</p>
+                      <p class="card-text">Filme: ${d["Film joué "]}</p>
+                      <p class="card-text">Rôle: ${d["Le rôle joué"]}</p>
+                  </div>
+              `;
+            }
+          });
+      }
+
+      getData();
+    </script>
+  </body>
+</html>
